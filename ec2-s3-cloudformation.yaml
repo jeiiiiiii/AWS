@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "CloudFormation template to create an EC2 instance and an S3 bucket"
+
+Resources:
+  # S3 Bucket
+  MyS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "my-s3-bucket-${AWS::AccountId}-${AWS::Region}"
+      VersioningConfiguration:
+        Status: Enabled
+
+  # EC2 Instance
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0474ac020852b87a9
+      KeyName: my-key-pair  # Replace with your key pair name
+      SecurityGroupIds:
+        - !Ref MySecurityGroup
+      Tags:
+        - Key: Name
+          Value: "CloudFormationEC2"
+
+  # Security Group for EC2
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Allow SSH and HTTP"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0  # Allow SSH (update this for security)
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0  # Allow HTTP traffic
+
+Outputs:
+  S3BucketName:
+    Description: "The name of the created S3 bucket"
+    Value: !Ref MyS3Bucket
+
+  EC2InstanceId:
+    Description: "The ID of the created EC2 instance"
+    Value: !Ref MyEC2Instance

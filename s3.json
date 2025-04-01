@@ -1,0 +1,12 @@
+{
+    "Comment": "Automate AWS account setup with S3 only",
+    "StartAt": "Create S3 Bucket",
+    "States": {
+      "Create S3 Bucket": {
+        "Type": "Task",
+        "Resource": "arn:aws:lambda:ap-southeast-1:876497563387:function:jei-auto-create-s3",
+        "End": true
+      }
+    }
+  }
+  
