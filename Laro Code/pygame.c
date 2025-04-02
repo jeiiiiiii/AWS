@@ -491,6 +491,7 @@ public void ShowFinalResults()
         if (yesalfButton != null)
             yesalfButton.gameObject.SetActive(true);
 
+
     }
     private string GetMascotContinueDialogue()
         {
